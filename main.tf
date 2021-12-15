@@ -3,8 +3,10 @@ resource "azurerm_virtual_network" "vnet" {
   location            = var.location
   resource_group_name = var.resource_group_name
   address_space       = var.address_space
-  tags                = var.tags
-  dns_servers         = var.dns_servers
+  tags = merge(var.tags, {
+    yor_trace = "97d760e9-176f-445f-b4a9-1805d9ba681f"
+  })
+  dns_servers = var.dns_servers
 }
 
 module "subnet" {
@@ -55,7 +57,9 @@ resource "azurerm_route_table" "route_table" {
     }
   }
 
-  tags = var.tags
+  tags = merge(var.tags, {
+    yor_trace = "76c3387d-8229-430f-b9b4-4e5488485056"
+  })
 }
 
 resource "azurerm_route" "non_inline_route" {
@@ -113,6 +117,9 @@ resource "azurerm_route_table" "aks_route_table" {
   location                      = var.location
   resource_group_name           = var.resource_group_name
   disable_bgp_route_propagation = each.value.disable_bgp_route_propagation
+  tags = {
+    yor_trace = "3a2db3bf-1486-49db-b585-6241391d6fec"
+  }
 }
 
 resource "azurerm_route" "aks_route" {
