@@ -34,11 +34,13 @@ resource "azurerm_network_security_group" "nsg" {
   name                = "${var.names.resource_group_type}-${var.names.product_name}-${var.subnet_type}-security-group"
   location            = var.location
   resource_group_name = var.resource_group_name
-  tags                = merge(var.tags, {subnet_type = lookup(local.allowed_subnet_info, var.subnet_type, var.subnet_type)})
+  tags = merge(var.tags, { subnet_type = lookup(local.allowed_subnet_info, var.subnet_type, var.subnet_type) }, {
+    yor_trace = "bd6e195a-8706-49a8-ad2e-03453ebb90d0"
+  })
 }
 
 resource "azurerm_network_security_rule" "deny_all_inbound" {
-  count                       = ((var.create_network_security_group && var.configure_nsg_rules) ? 1 : 0)
+  count = ((var.create_network_security_group && var.configure_nsg_rules) ? 1 : 0)
 
   name                        = "DenyAllInbound"
   priority                    = 4096
@@ -54,7 +56,7 @@ resource "azurerm_network_security_rule" "deny_all_inbound" {
 }
 
 resource "azurerm_network_security_rule" "deny_all_outbound" {
-  count                       = ((var.create_network_security_group && var.configure_nsg_rules) ? 1 : 0)
+  count = ((var.create_network_security_group && var.configure_nsg_rules) ? 1 : 0)
 
   name                        = "DenyAllOutbound"
   priority                    = 4096
@@ -70,7 +72,7 @@ resource "azurerm_network_security_rule" "deny_all_outbound" {
 }
 
 resource "azurerm_network_security_rule" "allow_lb_inbound" {
-  count                       = ((var.create_network_security_group && var.configure_nsg_rules && var.allow_lb_inbound) ? 1 : 0)
+  count = ((var.create_network_security_group && var.configure_nsg_rules && var.allow_lb_inbound) ? 1 : 0)
 
   name                        = "AllowAzureLoadBalancerIn"
   priority                    = 4095
@@ -86,7 +88,7 @@ resource "azurerm_network_security_rule" "allow_lb_inbound" {
 }
 
 resource "azurerm_network_security_rule" "allow_internet_outbound" {
-  count                       = ((var.create_network_security_group && var.configure_nsg_rules && var.allow_internet_outbound) ? 1 : 0)
+  count = ((var.create_network_security_group && var.configure_nsg_rules && var.allow_internet_outbound) ? 1 : 0)
 
   name                        = "AllowInternetOut"
   priority                    = 4095
@@ -102,7 +104,7 @@ resource "azurerm_network_security_rule" "allow_internet_outbound" {
 }
 
 resource "azurerm_network_security_rule" "allow_vnet_inbound" {
-  count                       = ((var.create_network_security_group && var.configure_nsg_rules && var.allow_vnet_inbound) ? 1 : 0)
+  count = ((var.create_network_security_group && var.configure_nsg_rules && var.allow_vnet_inbound) ? 1 : 0)
 
   name                        = "AllowVnetIn"
   priority                    = 4094
@@ -118,7 +120,7 @@ resource "azurerm_network_security_rule" "allow_vnet_inbound" {
 }
 
 resource "azurerm_network_security_rule" "allow_vnet_outbound" {
-  count                       = ((var.create_network_security_group && var.configure_nsg_rules && var.allow_vnet_outbound) ? 1 : 0)
+  count = ((var.create_network_security_group && var.configure_nsg_rules && var.allow_vnet_outbound) ? 1 : 0)
 
   name                        = "AllowVnetOut"
   priority                    = 4094
